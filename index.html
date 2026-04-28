@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Estadística para Investigación 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:        #f7f5f0;
+      --bg2:       #efecea;
+      --bg3:       #e4e0d8;
+      --ink:       #1c1917;
+      --ink2:      #44403c;
+      --ink3:      #78716c;
+      --border:    #d6d0c8;
+      --accent:    #1d4ed8;
+      --accent-bg: #eff6ff;
+      --m1:        #b45309;   /* módulo 1 — ámbar */
+      --m1-bg:     #fffbeb;
+      --m2:        #0f766e;   /* módulo 2 — teal */
+      --m2-bg:     #f0fdfa;
+      --done:      #16a34a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ══════════════════════════════
+       SIDEBAR
+    ══════════════════════════════ */
+    .sidebar {
+      background: var(--ink);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .sidebar-top {
+      padding: 32px 28px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .book-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 10px;
+    }
+
+    .book-title {
+      font-family: 'Lora', serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .book-author {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+    }
+    .book-author strong {
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+    }
+
+    /* search */
+    .search-box {
+      margin: 20px 28px 0;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 9px 14px 9px 36px;
+      color: #fff;
+      font-size: 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .search-box input::placeholder { color: rgba(255,255,255,0.3); }
+    .search-box input:focus { border-color: rgba(255,255,255,0.3); }
+    .search-box::before {
+      content: '⌕';
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.3);
+      font-size: 16px;
+    }
+
+    /* nav */
+    .nav-body {
+      flex: 1;
+      padding: 20px 0 20px;
+      overflow-y: auto;
+    }
+
+    .nav-module {
+      margin-bottom: 4px;
+    }
+
+    .module-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 28px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .module-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .mod1 .module-dot { background: var(--m1); }
+    .mod2 .module-dot { background: var(--m2); }
+
+    .module-name {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      flex: 1;
+    }
+    .module-arrow {
+      font-size: 10px;
+      color: rgba(255,255,255,0.25);
+      transition: transform 0.2s;
+    }
+    .module-arrow.open { transform: rotate(90deg); }
+
+    .nav-sessions {
+      padding: 0 0 8px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 9px 28px;
+      text-decoration: none;
+      transition: background 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .nav-link:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    .nav-link.active {
+      background: rgba(255,255,255,0.07);
+      border-left-color: #fff;
+    }
+
+    .nav-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.25);
+      padding-top: 3px;
+      flex-shrink: 0;
+      width: 22px;
+    }
+    .nav-info { flex: 1; }
+    .nav-title {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.4;
+      display: block;
+    }
+    .nav-date {
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .nav-status {
+      font-size: 10px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .status-done  { color: var(--done); }
+    .status-next  { color: #facc15; }
+    .status-soon  { color: rgba(255,255,255,0.2); }
+
+    .sidebar-footer {
+      padding: 20px 28px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .sidebar-footer a {
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+    }
+
+    /* ══════════════════════════════
+       MAIN
+    ══════════════════════════════ */
+    .main {
+      overflow-x: hidden;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(160deg, #1e3a5f 0%, #1c1917 100%);
+      padding: 64px 64px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -60px; bottom: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+    }
+
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(30px, 3.5vw, 48px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero h1 span {
+      font-style: italic;
+      color: #93c5fd;
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.55);
+      max-width: 520px;
+      margin-bottom: 32px;
+      line-height: 1.75;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .chip {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
+    .chip strong { color: #fff; font-weight: 500; }
+
+    /* CONTENT */
+    .content {
+      padding: 52px 64px 80px;
+    }
+
+    /* PROGRESS BAR */
+    .progress-section {
+      margin-bottom: 48px;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--ink3);
+      margin-bottom: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .progress-track {
+      height: 6px;
+      background: var(--bg3);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #60a5fa);
+      border-radius: 3px;
+      width: 11%; /* 1 of 9 sessions */
+      transition: width 0.6s ease;
+    }
+
+    /* MODULE SECTIONS */
+    .module-section { margin-bottom: 48px; }
+
+    .module-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .module-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .pill-m1 { background: var(--m1-bg); color: var(--m1); border: 1px solid #fde68a; }
+    .pill-m2 { background: var(--m2-bg); color: var(--m2); border: 1px solid #99f6e4; }
+
+    .module-title h2 {
+      font-family: 'Lora', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .module-title .session-count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--ink3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* SESSION CARDS */
+    .sessions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 700px) { .sessions-grid { grid-template-columns: 1fr; } }
+
+    .session-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      text-decoration: none;
+      display: block;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .session-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+    }
+    .session-card.m1::before { background: var(--m1); }
+    .session-card.m2::before { background: var(--m2); }
+    .session-card.disabled {
+      opacity: 0.55;
+      cursor: default;
+      pointer-events: none;
+    }
+    .session-card:not(.disabled):hover {
+      border-color: #a8a29e;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      transform: translateY(-2px);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .card-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink3);
+    }
+    .card-badge {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    .badge-done { background: #dcfce7; color: #15803d; }
+    .badge-next { background: #fef9c3; color: #854d0e; }
+    .badge-soon { background: var(--bg2); color: var(--ink3); }
+
+    .card-title {
+      font-family: 'Lora', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .card-topics {
+      list-style: none;
+      margin-bottom: 14px;
+    }
+    .card-topics li {
+      font-size: 12px;
+      color: var(--ink3);
+      padding: 2px 0;
+      padding-left: 12px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .card-topics li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--ink3);
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--bg3);
+    }
+    .card-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink3);
+    }
+    .card-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .card-link::after { content: '→'; }
+
+    /* INFO BOXES */
+    .info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 700px) { .info-row { grid-template-columns: 1fr; } }
+
+    .info-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .info-box .ib-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      margin-bottom: 6px;
+    }
+    .info-box .ib-value {
+      font-family: 'Lora', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .info-box .ib-sub {
+      font-size: 12px;
+      color: var(--ink3);
+    }
+
+    /* TOOLS */
+    .tools-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+    .tools-section h3 {
+      font-family: 'Lora', serif;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 700px) { .tools-grid { grid-template-columns: 1fr 1fr; } }
+    .tool-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+    }
+    .tool-item .t-icon { font-size: 22px; margin-bottom: 6px; }
+    .tool-item .t-name {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .tool-item .t-desc { font-size: 11px; color: var(--ink3); }
+
+    /* FOOTER */
+    .page-footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.4);
+      padding: 28px 64px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .page-footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      body { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .hero, .content { padding: 32px; }
+      .page-footer { padding: 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <div class="book-label">Libro de Apuntes · CEDIA 2026</div>
+    <div class="book-title">Estadística para Investigación</div>
+    <div class="book-author">Ing. <strong>Juan Carlos Llivisaca</strong> · Universidad de Cuenca</div>
+  </div>
+
+  <div class="search-box">
+    <input type="text" placeholder="Buscar sesión o tema..." id="searchInput" oninput="filterNav()"/>
+  </div>
+
+  <nav class="nav-body" id="navBody">
+
+    <!-- MÓDULO 1 -->
+    <div class="nav-module mod1">
+      <div class="module-header" onclick="toggleModule(this)">
+        <span class="module-dot"></span>
+        <span class="module-name">Módulo 1 — Estadística Básica con R</span>
+        <span class="module-arrow open">▶</span>
+      </div>
+      <div class="nav-sessions">
+        <a href="sesion1_teoria_v2.html" class="nav-link active">
+          <span class="nav-num">01</span>
+          <span class="nav-info">
+            <span class="nav-title">Introducción</span>
+            <span class="nav-date">04 mayo</span>
+          </span>
+          <span class="nav-status status-done">✓</span>
+        </a>
+        <a href="#" class="nav-link">
+          <span class="nav-num">02</span>
+          <span class="nav-info">
+            <span class="nav-title">Manipulación de datos con R</span>
+            <span class="nav-date">06 mayo</span>
+          </span>
+          <span class="nav-status status-next">◉</span>
+        </a>
+        <a href="#" class="nav-link">
+          <span class="nav-num">03</span>
+          <span class="nav-info">
+            <span class="nav-title">Estadística descriptiva</span>
+            <span class="nav-date">11 mayo</span>
+          </span>
+          <span class="nav-status status-soon">○</span>
+        </a>
+        <a href="#" class="nav-link">
+          <span class="nav-num">04</span>
+          <span class="nav-info">
+            <span class="nav-title">Visualización con R</span>
+            <span class="nav-date">13 mayo</span>
+          </span>
+          <span class="nav-status status-soon">○</span>
+        </a>
+        <a href="#" class="nav-link">
+          <span class="nav-num">05</span>
+          <span class="nav-info">
+            <span class="nav-title">Probabilidad y muestreo</span>
+            <span class="nav-date">18 mayo</span>
+          </span>
+          <span class="nav-status status-soon">○</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- MÓDULO 2 -->
+    <div class="nav-module mod2">
+      <div class="module-header" onclick="toggleModule(this)">
+        <span class="module-dot"></span>
+        <span class="module-name">Módulo 2 — Estadística Avanzada</span>
+        <span class="module-arrow open">▶</span>
+      </div>
+      <div class="nav-sessions">
+        <a href="#" class="nav-link">
+          <span class="nav-num">06</span>
+          <span class="nav-info">
+            <span class="nav-title">Normalidad y distribuciones</span>
+            <span class="nav-date">20 mayo</span>
+          </span>
+          <span class="nav-status status-soon">○</span>
+        </a>
+        <a href="#" class="nav-link">
+          <span class="nav-num">07</span>
+          <span class="nav-info">
+            <span class="nav-title">Estadística inferencial</span>
+            <span class="nav-date">25 mayo</span>
+          </span>
+          <span class="nav-status status-soon">○</span>
+        </a>
+        <a href="#" class="nav-link">
+          <span class="nav-num">08</span>
+          <span class="nav-info">
+            <span class="nav-title">Pruebas no paramétricas</span>
+            <span class="nav-date">27 mayo</span>
+          </span>
+          <span class="nav-status status-soon">○</span>
+        </a>
+        <a href="#" class="nav-link">
+          <span class="nav-num">09</span>
+          <span class="nav-info">
+            <span class="nav-title">Regresión y proyecto integrador</span>
+            <span class="nav-date">01 jun</span>
+          </span>
+          <span class="nav-status status-soon">○</span>
+        </a>
+      </div>
+    </div>
+
+  </nav>
+
+  <div class="sidebar-footer">
+    CEDIA · TMO · 2026<br>
+    <a href="https://github.com/JLLivisaca/Estad-sticaB-sica" target="_blank">github.com/JLLivisaca</a>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Libro de Apuntes · Mayo – Junio 2026</div>
+    <h1>Estadística para<br><span>Investigación</span></h1>
+    <p>Curso dirigido a docentes e investigadores universitarios. Dos módulos, nueve sesiones, herramientas de código libre y un hilo conductor: análisis reproducible para publicación científica de alto impacto.</p>
+    <div class="hero-chips">
+      <div class="chip">📅 <strong>04 mayo – 01 junio 2026</strong></div>
+      <div class="chip">⏱ <strong>30 horas</strong></div>
+      <div class="chip">🛠 <strong>R · Jamovi · RStudio</strong></div>
+      <div class="chip">🏛 <strong>CEDIA</strong></div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- INFO ROW -->
+    <div class="info-row">
+      <div class="info-box">
+        <div class="ib-label">Avance del curso</div>
+        <div class="ib-value">1 / 9</div>
+        <div class="ib-sub">sesiones completadas</div>
+      </div>
+      <div class="info-box">
+        <div class="ib-label">Próxima sesión</div>
+        <div class="ib-value">Ses. 2</div>
+        <div class="ib-sub">06 de mayo · Manipulación de datos</div>
+      </div>
+      <div class="info-box">
+        <div class="ib-label">Instructor</div>
+        <div class="ib-value" style="font-size:15px; margin-top:4px;">Ing. J. C. Llivisaca</div>
+        <div class="ib-sub">Universidad de Cuenca · IMAGINE</div>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-section">
+      <div class="progress-label">
+        <span>Progreso del curso</span>
+        <span>11% completado</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- MÓDULO 1 -->
+    <div class="module-section">
+      <div class="module-title">
+        <span class="module-pill pill-m1">Módulo 1</span>
+        <h2>Estadística Básica con R</h2>
+        <span class="session-count">5 sesiones</span>
+      </div>
+      <div class="sessions-grid">
+
+        <a href="sesion1_teoria_v2.html" class="session-card m1">
+          <div class="card-top">
+            <span class="card-num">Sesión 01</span>
+            <span class="card-badge badge-done">✓ Disponible</span>
+          </div>
+          <div class="card-title">Introducción a la Estadística para Investigación</div>
+          <ul class="card-topics">
+            <li>Estadística como herramienta científica</li>
+            <li>Significancia estadística vs. relevancia práctica</li>
+            <li>Introducción a R y Jamovi</li>
+          </ul>
+          <div class="card-footer">
+            <span class="card-date">04 mayo · 2h</span>
+            <span class="card-link">Ver sesión</span>
+          </div>
+        </a>
+
+        <div class="session-card m1 disabled">
+          <div class="card-top">
+            <span class="card-num">Sesión 02</span>
+            <span class="card-badge badge-next">Próxima</span>
+          </div>
+          <div class="card-title">Manipulación de datos con R</div>
+          <ul class="card-topics">
+            <li>Importación de datos (CSV, Excel)</li>
+            <li>Limpieza con tidyverse</li>
+            <li>EDA y detección de valores atípicos</li>
+          </ul>
+          <div class="card-footer">
+            <span class="card-date">06 mayo · 2h</span>
+            <span class="card-link" style="color:var(--ink3)">Próximamente</span>
+          </div>
+        </div>
+
+        <div class="session-card m1 disabled">
+          <div class="card-top">
+            <span class="card-num">Sesión 03</span>
+            <span class="card-badge badge-soon">Pendiente</span>
+          </div>
+          <div class="card-title">Estadística Descriptiva</div>
+          <ul class="card-topics">
+            <li>Media, mediana, moda, curtosis, asimetría</li>
+            <li>Distribución de frecuencias</li>
+            <li>Reportes reproducibles con R Markdown</li>
+          </ul>
+          <div class="card-footer">
+            <span class="card-date">11 mayo · 2h</span>
+            <span class="card-link" style="color:var(--ink3)">Próximamente</span>
+          </div>
+        </div>
+
+        <div class="session-card m1 disabled">
+          <div class="card-top">
+            <span class="card-num">Sesión 04</span>
+            <span class="card-badge badge-soon">Pendiente</span>
+          </div>
+          <div class="card-title">Visualización de Datos con R</div>
+          <ul class="card-topics">
+            <li>Gráficos cualitativos y cuantitativos</li>
+            <li>ggplot2 y esquisser</li>
+            <li>ggstatplot para publicaciones</li>
+          </ul>
+          <div class="card-footer">
+            <span class="card-date">13 mayo · 2h</span>
+            <span class="card-link" style="color:var(--ink3)">Próximamente</span>
+          </div>
+        </div>
+
+        <div class="session-card m1 disabled">
+          <div class="card-top">
+            <span class="card-num">Sesión 05</span>
+            <span class="card-badge badge-soon">Pendiente</span>
+          </div>
+          <div class="card-title">Probabilidad y Muestreo</div>
+          <ul class="card-topics">
+            <li>Concepto de probabilidad en investigación</li>
+            <li>Parámetro vs. estadístico</li>
+            <li>Tipos de muestreo</li>
+          </ul>
+          <div class="card-footer">
+            <span class="card-date">18 mayo · 2h</span>
+            <span class="card-link" style="color:var(--ink3)">Próximamente</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MÓDULO 2 -->
+    <div class="module-section">
+      <div class="module-title">
+        <span class="module-pill pill-m2">Módulo 2</span>
+        <h2>Estadística Avanzada e Inferencial</h2>
+        <span class="session-count">4 sesiones</span>
+      </div>
+      <div class="sessions-grid">
+
+        <div class="session-card m2 disabled">
+          <div class="card-top">
+            <span class="card-num">Sesión 06</span>
+            <span class="card-badge badge-soon">Pendiente</span>
+          </div>
+          <div class="card-title">Normalidad y Distribuciones de Probabilidad</div>
+          <ul class="card-topics">
+            <li>Shapiro-Wilk y Kolmogorov-Smirnov</li>
+            <li>Distribuciones: normal, t, chi-cuadrado, F</li>
+            <li>Intervalos de confianza</li>
+          </ul>
+          <div class="card-footer">
+            <span class="card-date">20 mayo · 2h</span>
+            <span class="card-link" style="color:var(--ink3)">Próximamente</span>
+          </div>
+        </div>
+
+        <div class="session-card m2 disabled">
+          <div class="card-top">
+            <span class="card-num">Sesión 07</span>
+            <span class="card-badge badge-soon">Pendiente</span>
+          </div>
+          <div class="card-title">Estadística Inferencial</div>
+          <ul class="card-topics">
+            <li>Pruebas de hipótesis: error tipo I y II, valor p</li>
+            <li>t-test y ANOVA</li>
+            <li>p-hacking y HARKing</li>
+          </ul>
+          <div class="card-footer">
+            <span class="card-date">25 mayo · 2h</span>
+            <span class="card-link" style="color:var(--ink3)">Próximamente</span>
+          </div>
+        </div>
+
+        <div class="session-card m2 disabled">
+          <div class="card-top">
+            <span class="card-num">Sesión 08</span>
+            <span class="card-badge badge-soon">Pendiente</span>
+          </div>
+          <div class="card-title">Pruebas No Paramétricas y Correlación</div>
+          <ul class="card-topics">
+            <li>Mann-Whitney, Kruskal-Wallis, Wilcoxon</li>
+            <li>Correlación de Pearson y Spearman</li>
+            <li>Tamaño del efecto y potencia estadística</li>
+          </ul>
+          <div class="card-footer">
+            <span class="card-date">27 mayo · 2h</span>
+            <span class="card-link" style="color:var(--ink3)">Próximamente</span>
+          </div>
+        </div>
+
+        <div class="session-card m2 disabled">
+          <div class="card-top">
+            <span class="card-num">Sesión 09</span>
+            <span class="card-badge badge-soon">Pendiente</span>
+          </div>
+          <div class="card-title">Regresión y Proyecto Integrador</div>
+          <ul class="card-topics">
+            <li>Regresión lineal simple y múltiple en R</li>
+            <li>Diagnóstico del modelo</li>
+            <li>Taller final: reporte en R Markdown / Quarto</li>
+          </ul>
+          <div class="card-footer">
+            <span class="card-date">01 junio · 2h</span>
+            <span class="card-link" style="color:var(--ink3)">Próximamente</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="tools-section">
+      <h3>Herramientas del curso</h3>
+      <div class="tools-grid">
+        <div class="tool-item">
+          <div class="t-icon">📦</div>
+          <div class="t-name">R</div>
+          <div class="t-desc">cran.r-project.org</div>
+        </div>
+        <div class="tool-item">
+          <div class="t-icon">🖥</div>
+          <div class="t-name">RStudio</div>
+          <div class="t-desc">posit.co</div>
+        </div>
+        <div class="tool-item">
+          <div class="t-icon">📊</div>
+          <div class="t-name">Jamovi</div>
+          <div class="t-desc">jamovi.org</div>
+        </div>
+        <div class="tool-item">
+          <div class="t-icon">📝</div>
+          <div class="t-name">Quarto</div>
+          <div class="t-desc">quarto.org</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <span>Estadística para Investigación 2026 · CEDIA · TMO</span>
+    <span>Ing. Juan Carlos Llivisaca · <a href="https://orcid.org/0000-0003-2154-3277" target="_blank">ORCID</a> · <a href="https://www.researchgate.net/profile/Juan-Llivisaca-2" target="_blank">ResearchGate</a></span>
+  </div>
+
+</main>
+
+<script>
+  // Toggle módulos en sidebar
+  function toggleModule(header) {
+    const sessions = header.nextElementSibling;
+    const arrow = header.querySelector('.module-arrow');
+    const isOpen = arrow.classList.contains('open');
+    sessions.style.display = isOpen ? 'none' : 'block';
+    arrow.classList.toggle('open', !isOpen);
+  }
+
+  // Búsqueda en sidebar
+  function filterNav() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('.nav-link').forEach(link => {
+      const text = link.textContent.toLowerCase();
+      link.style.display = text.includes(q) ? 'flex' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>
