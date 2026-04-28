@@ -462,6 +462,83 @@
     .next-btn:hover { opacity: 0.88; }
     .next-btn::after { content: '→'; font-size: 16px; }
 
+    /* ── CODE BLOCKS ── */
+    .code-step {
+      margin-bottom: 28px;
+    }
+    .step-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .step-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .code-block {
+      background: #1e1e2e;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #2a2a3e;
+    }
+    .code-block pre {
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 0;
+    }
+    .code-block code {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      line-height: 1.75;
+      color: #cdd6f4;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .code-block .c  { color: #6c7086; font-style: italic; }
+    .code-block .kw { color: #89b4fa; }
+    .code-block .s  { color: #a6e3a1; }
+    .code-block .n  { color: #fab387; }
+    .code-block .op { color: #89dceb; }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6);
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      padding: 5px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    .copy-btn.copied {
+      background: rgba(108,249,168,0.15);
+      border-color: rgba(108,249,168,0.3);
+      color: #a6e3a1;
+    }
+
     /* DIVIDER */
     .divider {
       border: none;
@@ -510,6 +587,16 @@
       <span class="nav-num">1.3</span>
       <span class="nav-text">Introducción a R y Jamovi</span>
     </a>
+    <div style="margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
+      <div style="font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
+                  color:rgba(255,255,255,0.3); font-family:'DM Mono',monospace; margin-bottom:10px;">
+        Parte Práctica
+      </div>
+      <a href="#practica" class="nav-item" style="border-left:3px solid #1a6b4a;">
+        <span class="nav-num" style="color:#1a6b4a;">★</span>
+        <span class="nav-text">Artículo Q1 + Scripts R</span>
+      </a>
+    </div>
 
     <div class="sidebar-meta">
       <div class="meta-row"><span>Competencia</span><span>Investigación</span></div>
@@ -729,6 +816,291 @@
 
     </div><!-- /content -->
 
+    <!-- ══════════════════════════════════════════════════
+         PARTE PRÁCTICA
+    ══════════════════════════════════════════════════ -->
+    <div id="practica" class="content" style="padding-top:0; border-top: 2px solid var(--rule);">
+
+      <!-- HEADER PRÁCTICA -->
+      <div style="display:flex; align-items:center; gap:12px; margin: 40px 0 28px;">
+        <span style="background:#1a6b4a; color:#fff; font-family:'DM Mono',monospace;
+                     font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+                     padding:5px 14px; border-radius:4px;">Parte Práctica</span>
+        <h2 style="font-family:'Fraunces',serif; font-size:24px; font-weight:600; color:var(--ink);">
+          Análisis basado en artículo Q1
+        </h2>
+      </div>
+
+      <!-- ARTICLE CARD -->
+      <div style="background:#fff; border:1px solid var(--rule); border-left:3px solid #1a6b4a;
+                  border-radius:8px; padding:24px 28px; margin-bottom:32px;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em;
+                    text-transform:uppercase; color:var(--ink-muted); margin-bottom:10px;">
+          Artículo base · Frontiers in Public Health · Q1
+        </div>
+        <div style="font-family:'Fraunces',serif; font-size:18px; font-weight:600;
+                    color:var(--ink); margin-bottom:8px; line-height:1.4;">
+          Occupational Burnout and Productivity Loss: A Cross-Sectional Study Among Academic University Staff
+        </div>
+        <div style="font-size:13px; color:var(--ink-muted); margin-bottom:14px;">
+          Amer, S.A.A.M., Elotla, S.F., Ameen, A.E., Shah, J. &amp; Fouad, A.M. (2022)
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <span style="background:#e6f4ee; border:1px solid #b0d8c4; border-radius:4px;
+                       padding:3px 10px; font-size:11px; color:#1a6b4a; font-family:'DM Mono',monospace;">
+            ✓ Open Access
+          </span>
+          <span style="background:#e6f4ee; border:1px solid #b0d8c4; border-radius:4px;
+                       padding:3px 10px; font-size:11px; color:#1a6b4a; font-family:'DM Mono',monospace;">
+            Q1 · Scopus · WoS
+          </span>
+          <span style="background:var(--paper2); border:1px solid var(--rule); border-radius:4px;
+                       padding:3px 10px; font-size:11px; color:var(--ink-muted); font-family:'DM Mono',monospace;">
+            DOI: 10.3389/fpubh.2022.861674
+          </span>
+          <span style="background:var(--paper2); border:1px solid var(--rule); border-radius:4px;
+                       padding:3px 10px; font-size:11px; color:var(--ink-muted); font-family:'DM Mono',monospace;">
+            n = 240 docentes universitarios
+          </span>
+        </div>
+      </div>
+
+      <!-- POR QUÉ ESTE ARTÍCULO -->
+      <div style="background:var(--amber-light); border:1px solid #f0dca0; border-radius:8px;
+                  padding:18px 22px; margin-bottom:32px; display:flex; gap:14px;">
+        <span style="font-family:'Fraunces',serif; font-size:22px; color:var(--amber); flex-shrink:0; margin-top:2px;">★</span>
+        <div>
+          <strong style="display:block; color:var(--amber); font-size:13px; margin-bottom:4px;">¿Por qué este artículo?</strong>
+          <p style="font-size:14px; color:#6b4400; margin:0; line-height:1.65;">
+            El contexto es cercano a usted como participante — son docentes universitarios. Usa estadística descriptiva básica (medias, SD, frecuencias), tiene datos claros y reproducibles, y es un modelo real de reporte en revista Q1. Además conecta directamente con el Subtema 1.2: los autores reportan valor p pero ¿reportan tamaño del efecto?
+          </p>
+        </div>
+      </div>
+
+      <!-- DATOS DEL ESTUDIO -->
+      <h3 style="font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
+                 letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft);
+                 margin:0 0 12px;">Variables del estudio</h3>
+      <div class="table-wrap" style="margin-bottom:32px;">
+        <table>
+          <thead>
+            <tr><th>Variable</th><th>Tipo</th><th>Valores reportados</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Edad</td><td>Numérica continua</td><td>Media = 38.6 ± 8.2 años</td></tr>
+            <tr><td>Sexo</td><td>Categórica nominal</td><td>58.3% femenino</td></tr>
+            <tr><td>Rango académico</td><td>Categórica ordinal</td><td>Asistente / Asociado / Titular</td></tr>
+            <tr><td>Años de experiencia</td><td>Numérica continua</td><td>Media = 10.3 ± 7.1 años</td></tr>
+            <tr><td>Agotamiento emocional (MBI)</td><td>Numérica continua</td><td>Media = 3.12 ± 1.45 (escala 0–6)</td></tr>
+            <tr><td>Despersonalización (MBI)</td><td>Numérica continua</td><td>Media = 1.89 ± 1.23 (escala 0–6)</td></tr>
+            <tr><td>Realización personal (MBI)</td><td>Numérica continua</td><td>Media = 3.67 ± 1.18 (escala 0–6)</td></tr>
+            <tr><td>Pérdida de productividad (WPAI)</td><td>Numérica continua</td><td>Media = 28.4 ± 18.7 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- INSTRUCCIONES -->
+      <div style="background:var(--blue-light); border:1px solid #c0d4f0; border-radius:8px;
+                  padding:18px 22px; margin-bottom:32px; display:flex; gap:14px;">
+        <span style="font-family:'Fraunces',serif; font-size:22px; color:var(--blue); flex-shrink:0; margin-top:2px;">i</span>
+        <div>
+          <strong style="display:block; color:var(--blue); font-size:13px; margin-bottom:4px;">Instrucciones</strong>
+          <p style="font-size:14px; color:#2d4a70; margin:0; line-height:1.65;">
+            Copie cada bloque de código en su RStudio y ejecútelo paso a paso.
+            Use el botón <strong>Copiar</strong> en la esquina superior derecha de cada bloque.
+            Al finalizar habrá recreado el análisis descriptivo del artículo y generado 4 gráficos.
+          </p>
+        </div>
+      </div>
+
+      <!-- ── PASO 0 ── -->
+      <div class="code-step">
+        <div class="step-label">
+          <span class="step-num">Paso 0</span>
+          <span class="step-title">Instalar y cargar paquetes</span>
+        </div>
+        <div class="code-block" id="code0">
+          <button class="copy-btn" onclick="copyCode('code0', this)">Copiar</button>
+          <pre><code><span class="c"># Descomenta si es la primera vez (quita el #)</span>
+<span class="c"># install.packages("tidyverse")</span>
+<span class="c"># install.packages("psych")</span>
+<span class="c"># install.packages("janitor")</span>
+
+<span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(psych)
+<span class="kw">library</span>(janitor)
+
+<span class="c"># Verificar versión de R</span>
+R.version.string</code></pre>
+        </div>
+      </div>
+
+      <!-- ── PASO 1 ── -->
+      <div class="code-step">
+        <div class="step-label">
+          <span class="step-num">Paso 1</span>
+          <span class="step-title">Simular el dataset (n = 240, parámetros del artículo)</span>
+        </div>
+        <div class="code-block" id="code1">
+          <button class="copy-btn" onclick="copyCode('code1', this)">Copiar</button>
+          <pre><code><span class="kw">set.seed</span>(<span class="n">2026</span>)  <span class="c"># semilla para reproducibilidad</span>
+n <span class="op">&lt;-</span> <span class="n">240</span>
+
+datos <span class="op">&lt;-</span> <span class="kw">tibble</span>(
+  id          = <span class="n">1</span>:n,
+  edad        = <span class="kw">round</span>(<span class="kw">rnorm</span>(n, mean = <span class="n">38.6</span>, sd = <span class="n">8.2</span>)),
+  sexo        = <span class="kw">sample</span>(<span class="kw">c</span>(<span class="s">"Femenino"</span>, <span class="s">"Masculino"</span>),
+                        size = n, replace = <span class="kw">TRUE</span>,
+                        prob = <span class="kw">c</span>(<span class="n">0.583</span>, <span class="n">0.417</span>)),
+  rango       = <span class="kw">sample</span>(<span class="kw">c</span>(<span class="s">"Asistente"</span>, <span class="s">"Asociado"</span>, <span class="s">"Titular"</span>),
+                        size = n, replace = <span class="kw">TRUE</span>,
+                        prob = <span class="kw">c</span>(<span class="n">0.45</span>, <span class="n">0.35</span>, <span class="n">0.20</span>)),
+  anios_exp         = <span class="kw">round</span>(<span class="kw">rnorm</span>(n, mean = <span class="n">10.3</span>, sd = <span class="n">7.1</span>)) <span class="op">|&gt;</span> <span class="kw">pmax</span>(<span class="n">0</span>),
+  mbi_agotamiento   = <span class="kw">round</span>(<span class="kw">rnorm</span>(n, mean = <span class="n">3.12</span>, sd = <span class="n">1.45</span>), <span class="n">1</span>) <span class="op">|&gt;</span> <span class="kw">pmin</span>(<span class="n">6</span>) <span class="op">|&gt;</span> <span class="kw">pmax</span>(<span class="n">0</span>),
+  mbi_despers       = <span class="kw">round</span>(<span class="kw">rnorm</span>(n, mean = <span class="n">1.89</span>, sd = <span class="n">1.23</span>), <span class="n">1</span>) <span class="op">|&gt;</span> <span class="kw">pmin</span>(<span class="n">6</span>) <span class="op">|&gt;</span> <span class="kw">pmax</span>(<span class="n">0</span>),
+  mbi_realizacion   = <span class="kw">round</span>(<span class="kw">rnorm</span>(n, mean = <span class="n">3.67</span>, sd = <span class="n">1.18</span>), <span class="n">1</span>) <span class="op">|&gt;</span> <span class="kw">pmin</span>(<span class="n">6</span>) <span class="op">|&gt;</span> <span class="kw">pmax</span>(<span class="n">0</span>),
+  wpai_perdida      = <span class="kw">round</span>(<span class="kw">rnorm</span>(n, mean = <span class="n">28.4</span>, sd = <span class="n">18.7</span>), <span class="n">1</span>) <span class="op">|&gt;</span> <span class="kw">pmin</span>(<span class="n">100</span>) <span class="op">|&gt;</span> <span class="kw">pmax</span>(<span class="n">0</span>)
+)
+
+<span class="kw">glimpse</span>(datos)</code></pre>
+        </div>
+      </div>
+
+      <!-- ── PASO 2 ── -->
+      <div class="code-step">
+        <div class="step-label">
+          <span class="step-num">Paso 2</span>
+          <span class="step-title">Estadística descriptiva — variables numéricas</span>
+        </div>
+        <div class="code-block" id="code2">
+          <button class="copy-btn" onclick="copyCode('code2', this)">Copiar</button>
+          <pre><code><span class="c"># Tabla completa con psych::describe()</span>
+vars_num <span class="op">&lt;-</span> datos <span class="op">|&gt;</span>
+  <span class="kw">select</span>(edad, anios_exp, mbi_agotamiento,
+         mbi_despers, mbi_realizacion, wpai_perdida)
+
+<span class="kw">describe</span>(vars_num)</code></pre>
+        </div>
+      </div>
+
+      <!-- ── PASO 3 ── -->
+      <div class="code-step">
+        <div class="step-label">
+          <span class="step-num">Paso 3</span>
+          <span class="step-title">Frecuencias — variables categóricas</span>
+        </div>
+        <div class="code-block" id="code3">
+          <button class="copy-btn" onclick="copyCode('code3', this)">Copiar</button>
+          <pre><code><span class="c"># Frecuencias simples</span>
+datos <span class="op">|&gt;</span> <span class="kw">tabyl</span>(sexo) <span class="op">|&gt;</span> <span class="kw">adorn_pct_formatting</span>()
+datos <span class="op">|&gt;</span> <span class="kw">tabyl</span>(rango) <span class="op">|&gt;</span> <span class="kw">adorn_pct_formatting</span>()
+
+<span class="c"># Tabla cruzada rango × sexo</span>
+datos <span class="op">|&gt;</span>
+  <span class="kw">tabyl</span>(rango, sexo) <span class="op">|&gt;</span>
+  <span class="kw">adorn_totals</span>(<span class="kw">c</span>(<span class="s">"row"</span>, <span class="s">"col"</span>)) <span class="op">|&gt;</span>
+  <span class="kw">adorn_percentages</span>(<span class="s">"row"</span>) <span class="op">|&gt;</span>
+  <span class="kw">adorn_pct_formatting</span>() <span class="op">|&gt;</span>
+  <span class="kw">adorn_ns</span>()</code></pre>
+        </div>
+      </div>
+
+      <!-- ── PASO 4 ── -->
+      <div class="code-step">
+        <div class="step-label">
+          <span class="step-num">Paso 4</span>
+          <span class="step-title">Visualización con ggplot2 — 4 gráficos</span>
+        </div>
+        <div class="code-block" id="code4">
+          <button class="copy-btn" onclick="copyCode('code4', this)">Copiar</button>
+          <pre><code><span class="c"># ── Gráfico 1: Histograma de edad ──────────────────────────</span>
+<span class="kw">ggplot</span>(datos, <span class="kw">aes</span>(x = edad)) +
+  <span class="kw">geom_histogram</span>(binwidth = <span class="n">5</span>, fill = <span class="s">"#1d4ed8"</span>, color = <span class="s">"white"</span>, alpha = <span class="n">0.85</span>) +
+  <span class="kw">geom_vline</span>(xintercept = <span class="kw">mean</span>(datos<span class="op">$</span>edad),
+             color = <span class="s">"#b45309"</span>, linewidth = <span class="n">1</span>, linetype = <span class="s">"dashed"</span>) +
+  <span class="kw">labs</span>(title = <span class="s">"Distribución de edad — Docentes universitarios"</span>,
+       subtitle = <span class="s">"n = 240 | Amer et al. (2022)"</span>,
+       x = <span class="s">"Edad (años)"</span>, y = <span class="s">"Frecuencia"</span>) +
+  <span class="kw">theme_minimal</span>()
+
+<span class="c"># ── Gráfico 2: Boxplot agotamiento por rango ────────────────</span>
+<span class="kw">ggplot</span>(datos, <span class="kw">aes</span>(x = rango, y = mbi_agotamiento, fill = rango)) +
+  <span class="kw">geom_boxplot</span>(alpha = <span class="n">0.7</span>) +
+  <span class="kw">geom_jitter</span>(width = <span class="n">0.15</span>, alpha = <span class="n">0.25</span>, size = <span class="n">1</span>) +
+  <span class="kw">labs</span>(title = <span class="s">"Agotamiento emocional por rango académico"</span>,
+       x = <span class="s">"Rango"</span>, y = <span class="s">"MBI Agotamiento (0–6)"</span>) +
+  <span class="kw">theme_minimal</span>() + <span class="kw">theme</span>(legend.position = <span class="s">"none"</span>)
+
+<span class="c"># ── Gráfico 3: Barras nivel burnout por sexo ────────────────</span>
+datos <span class="op">|&gt;</span>
+  <span class="kw">mutate</span>(nivel_burnout = <span class="kw">case_when</span>(
+    mbi_agotamiento <span class="op">&gt;=</span> <span class="n">4.0</span> ~ <span class="s">"Alto"</span>,
+    mbi_agotamiento <span class="op">&gt;=</span> <span class="n">2.0</span> ~ <span class="s">"Moderado"</span>,
+    <span class="kw">TRUE</span>                   ~ <span class="s">"Bajo"</span>
+  )) <span class="op">|&gt;</span>
+  <span class="kw">count</span>(sexo, nivel_burnout) <span class="op">|&gt;</span>
+  <span class="kw">group_by</span>(sexo) <span class="op">|&gt;</span>
+  <span class="kw">mutate</span>(pct = n <span class="op">/</span> <span class="kw">sum</span>(n) <span class="op">*</span> <span class="n">100</span>) <span class="op">|&gt;</span>
+  <span class="kw">ggplot</span>(<span class="kw">aes</span>(x = sexo, y = pct, fill = nivel_burnout)) +
+  <span class="kw">geom_col</span>(position = <span class="s">"dodge"</span>, alpha = <span class="n">0.85</span>) +
+  <span class="kw">labs</span>(title = <span class="s">"Nivel de burnout por sexo"</span>,
+       x = <span class="s">"Sexo"</span>, y = <span class="s">"Porcentaje (%)"</span>) +
+  <span class="kw">theme_minimal</span>()
+
+<span class="c"># ── Gráfico 4: Dispersión agotamiento vs productividad ──────</span>
+<span class="kw">ggplot</span>(datos, <span class="kw">aes</span>(x = mbi_agotamiento, y = wpai_perdida)) +
+  <span class="kw">geom_point</span>(alpha = <span class="n">0.5</span>, color = <span class="s">"#1d4ed8"</span>) +
+  <span class="kw">geom_smooth</span>(method = <span class="s">"lm"</span>, se = <span class="kw">TRUE</span>, color = <span class="s">"#c0392b"</span>) +
+  <span class="kw">labs</span>(title = <span class="s">"Agotamiento emocional vs. Pérdida de productividad"</span>,
+       x = <span class="s">"MBI Agotamiento (0–6)"</span>, y = <span class="s">"WPAI Pérdida (%)"</span>) +
+  <span class="kw">theme_minimal</span>()</code></pre>
+        </div>
+      </div>
+
+      <!-- ── PASO 5 ── -->
+      <div class="code-step">
+        <div class="step-label">
+          <span class="step-num">Paso 5</span>
+          <span class="step-title">Reflexión: valor p vs. tamaño del efecto (Cohen's d)</span>
+        </div>
+        <div class="code-block" id="code5">
+          <button class="copy-btn" onclick="copyCode('code5', this)">Copiar</button>
+          <pre><code><span class="c"># Prueba t: Agotamiento — Asistente vs. Titular</span>
+grupo_a <span class="op">&lt;-</span> datos <span class="op">|&gt;</span> <span class="kw">filter</span>(rango == <span class="s">"Asistente"</span>) <span class="op">|&gt;</span> <span class="kw">pull</span>(mbi_agotamiento)
+grupo_t <span class="op">&lt;-</span> datos <span class="op">|&gt;</span> <span class="kw">filter</span>(rango == <span class="s">"Titular"</span>)   <span class="op">|&gt;</span> <span class="kw">pull</span>(mbi_agotamiento)
+
+prueba_t <span class="op">&lt;-</span> <span class="kw">t.test</span>(grupo_a, grupo_t)
+<span class="kw">print</span>(prueba_t)
+
+<span class="c"># Tamaño del efecto: Cohen's d</span>
+pooled_sd <span class="op">&lt;-</span> <span class="kw">sqrt</span>((<span class="kw">sd</span>(grupo_a)<span class="op">^</span><span class="n">2</span> <span class="op">+</span> <span class="kw">sd</span>(grupo_t)<span class="op">^</span><span class="n">2</span>) <span class="op">/</span> <span class="n">2</span>)
+cohen_d   <span class="op">&lt;-</span> (<span class="kw">mean</span>(grupo_a) <span class="op">-</span> <span class="kw">mean</span>(grupo_t)) <span class="op">/</span> pooled_sd
+
+<span class="kw">cat</span>(<span class="s">"Valor p     ="</span>, <span class="kw">round</span>(prueba_t<span class="op">$</span>p.value, <span class="n">4</span>), <span class="s">"\n"</span>)
+<span class="kw">cat</span>(<span class="s">"Cohen's d   ="</span>, <span class="kw">round</span>(cohen_d, <span class="n">3</span>), <span class="s">"\n"</span>)
+<span class="kw">cat</span>(<span class="s">"Interpretación: |d| &lt; 0.2 negligible · ~0.5 mediano · ≥ 0.8 grande\n"</span>)
+
+<span class="c"># Guardar dataset para Sesión 2</span>
+<span class="kw">write_csv</span>(datos, <span class="s">"burnout_academico_2026.csv"</span>)
+<span class="kw">cat</span>(<span class="s">"✓ Dataset guardado: burnout_academico_2026.csv\n"</span>)</code></pre>
+        </div>
+      </div>
+
+      <!-- PREGUNTA DISCUSIÓN -->
+      <div style="background:var(--green-light); border:1px solid #b0d8c4; border-radius:8px;
+                  padding:20px 24px; margin-top:8px;">
+        <strong style="display:block; color:var(--green); font-size:13px; margin-bottom:8px;">
+          💬 Pregunta para discusión grupal
+        </strong>
+        <p style="font-size:14.5px; color:#1a4a33; margin:0; line-height:1.7;">
+          Revise la sección de resultados del artículo de Amer et al. (2022).
+          ¿Los autores reportan el tamaño del efecto además del valor p?
+          ¿Un resultado con p &lt; 0.05 pero Cohen's d &lt; 0.2 es útil para la práctica docente o de gestión universitaria? ¿Por qué?
+        </p>
+      </div>
+
+    </div><!-- /práctica -->
+
     <!-- REFERENCES -->
     <div class="references">
       <h4>Referencias bibliográficas</h4>
@@ -752,5 +1124,19 @@
   </main>
 </div>
 
+<script>
+  function copyCode(blockId, btn) {
+    const block = document.getElementById(blockId);
+    const text  = block.querySelector('code').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copiado';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copiar';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
 </body>
 </html>
