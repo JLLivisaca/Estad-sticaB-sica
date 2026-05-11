@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sesión 3 — Práctica | Estadística 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;1,300&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset & tokens ───────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:   #0D1B5E;
+  --blue:   #1E3AB8;
+  --green:  #1E7A3C;
+  --teal:   #0E8E7A;
+  --amber:  #B85C00;
+  --red:    #B52525;
+  --bg:     #F4F6FA;
+  --surface:#FFFFFF;
+  --border: #DDE3F0;
+  --muted:  #6B7A99;
+  --text:   #111827;
+  --sidebar-bg: #0D1B5E;
+  --sidebar-w:  260px;
+  --header-h:   56px;
+  --font-display: 'Fraunces', serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+  --radius:       10px;
+}
+
+/* ── Layout ───────────────────────────────────────────── */
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+.sidebar{
+  width:var(--sidebar-w);min-height:100vh;background:var(--sidebar-bg);
+  position:fixed;top:0;left:0;display:flex;flex-direction:column;
+  padding:0 0 2rem;z-index:100;overflow-y:auto
+}
+.sidebar-logo{
+  padding:1.25rem 1.5rem 1rem;border-bottom:1px solid rgba(255,255,255,0.08);
+  font-family:var(--font-display);font-size:1.1rem;font-weight:600;
+  color:#fff;letter-spacing:-0.02em
+}
+.sidebar-logo span{color:#7BA7FF;font-weight:300;font-style:italic}
+.sidebar-section{padding:.75rem 1.5rem .25rem;font-size:.65rem;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(255,255,255,.35);font-family:var(--font-body)}
+.nav-item{
+  display:flex;align-items:center;gap:.6rem;padding:.52rem 1.5rem;
+  color:rgba(255,255,255,.62);font-size:.82rem;text-decoration:none;
+  transition:all .15s;border-left:2px solid transparent
+}
+.nav-item:hover{background:rgba(255,255,255,.05);color:#fff}
+.nav-item.active{
+  background:rgba(123,167,255,.12);color:#7BA7FF;
+  border-left-color:#7BA7FF;font-weight:500
+}
+.nav-item .nav-num{
+  font-family:var(--font-mono);font-size:.72rem;
+  background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px;
+  min-width:28px;text-align:center
+}
+.nav-item.active .nav-num{background:rgba(123,167,255,.2);color:#7BA7FF}
+.nav-divider{margin:.5rem 1.5rem;border:none;border-top:1px solid rgba(255,255,255,.08)}
+
+/* ── Main ─────────────────────────────────────────────── */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+
+.topbar{
+  height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;position:sticky;top:0;z-index:50
+}
+.topbar-left{display:flex;align-items:center;gap:.75rem}
+.breadcrumb{font-size:.8rem;color:var(--muted)}
+.breadcrumb a{color:var(--blue);text-decoration:none}
+.breadcrumb a:hover{text-decoration:underline}
+.session-badge{
+  background:#EAF0FB;color:var(--navy);font-size:.7rem;font-weight:500;
+  padding:3px 10px;border-radius:20px;font-family:var(--font-mono)
+}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.progress-mini{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted)}
+.progress-mini-bar{width:80px;height:5px;background:#E5E7EB;border-radius:3px;overflow:hidden}
+.progress-mini-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:3px;width:33%}
+
+/* ── Content ──────────────────────────────────────────── */
+.content{padding:2.5rem;max-width:860px;width:100%}
+
+.page-header{margin-bottom:2.5rem}
+.page-eyebrow{
+  font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--green);font-weight:500;margin-bottom:.5rem
+}
+.page-title{
+  font-family:var(--font-display);font-size:2.1rem;font-weight:600;
+  color:var(--navy);letter-spacing:-.03em;line-height:1.15;margin-bottom:.75rem
+}
+.page-subtitle{color:var(--muted);font-size:.95rem;line-height:1.65;max-width:620px}
+
+/* ── Objectives ───────────────────────────────────────── */
+.objectives{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;
+  margin-bottom:2.5rem
+}
+.obj-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.1rem 1.2rem;border-top:3px solid var(--blue)
+}
+.obj-card:nth-child(2){border-top-color:var(--green)}
+.obj-card:nth-child(3){border-top-color:var(--teal)}
+.obj-icon{font-size:1.3rem;margin-bottom:.5rem}
+.obj-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;margin-bottom:.3rem}
+.obj-text{font-size:.83rem;color:var(--text);line-height:1.55}
+
+/* ── Part headers ─────────────────────────────────────── */
+.part-header{
+  display:flex;align-items:center;gap:.75rem;margin:2.5rem 0 1.25rem;
+  padding-bottom:.75rem;border-bottom:1px solid var(--border)
+}
+.part-badge{
+  font-family:var(--font-mono);font-size:.72rem;font-weight:500;
+  padding:4px 10px;border-radius:5px;white-space:nowrap
+}
+.part-badge.eda   {background:#EAF7F0;color:#155A30}
+.part-badge.central{background:#EAF0FB;color:#1A3A8F}
+.part-badge.disp  {background:#FFF3E0;color:#7A3E00}
+.part-badge.freq  {background:#F3E8FF;color:#4A1D7A}
+.part-badge.rmd   {background:#E8F5FF;color:#0A4A7A}
+.part-badge.apa   {background:#FFF0F0;color:#7A1212}
+.part-title{font-family:var(--font-display);font-size:1.15rem;font-weight:600;color:var(--navy)}
+.part-num{
+  font-family:var(--font-mono);font-size:.7rem;background:var(--navy);
+  color:#fff;padding:3px 8px;border-radius:4px
+}
+
+/* ── Exercise cards ───────────────────────────────────── */
+.exercise{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  margin-bottom:1rem;overflow:hidden
+}
+.ex-header{
+  display:flex;align-items:flex-start;gap:1rem;padding:1.1rem 1.3rem;
+  cursor:pointer;user-select:none
+}
+.ex-num{
+  font-family:var(--font-mono);font-size:.72rem;font-weight:500;min-width:28px;
+  background:var(--bg);border:1px solid var(--border);padding:2px 6px;
+  border-radius:5px;text-align:center;color:var(--navy);flex-shrink:0;margin-top:2px
+}
+.ex-content{flex:1}
+.ex-task{font-size:.9rem;font-weight:500;color:var(--text);line-height:1.55;margin-bottom:.3rem}
+.ex-hint{font-size:.8rem;color:var(--muted);line-height:1.5}
+.ex-expand{font-size:1rem;color:var(--muted);transition:transform .2s;flex-shrink:0;margin-top:2px}
+.exercise.open .ex-expand{transform:rotate(180deg)}
+
+.ex-body{
+  display:none;padding:0 1.3rem 1.2rem;
+  border-top:1px solid var(--border);padding-top:1rem
+}
+.exercise.open .ex-body{display:block}
+
+/* ── Code blocks ──────────────────────────────────────── */
+.code-block{
+  background:#0D1B3E;border-radius:8px;
+  padding:1rem 1.1rem;margin:.75rem 0;position:relative;overflow:hidden
+}
+.code-block pre{
+  font-family:var(--font-mono);font-size:.8rem;color:#CDD9F5;
+  line-height:1.7;overflow-x:auto;white-space:pre
+}
+.code-block .cm{color:#5A7AAF}
+.code-block .fn{color:#79DCAA}
+.code-block .st{color:#F8C98A}
+.code-block .kw{color:#89B4FA}
+.code-block .nu{color:#F38BA8}
+.code-block .op{color:#89DCEB}
+
+.copy-btn{
+  position:absolute;top:10px;right:10px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.5);font-size:.7rem;font-family:var(--font-mono);
+  padding:4px 10px;border-radius:4px;cursor:pointer;transition:all .2s
+}
+.copy-btn:hover{background:rgba(255,255,255,.13);color:#fff}
+.copy-btn.copied{background:rgba(108,249,168,.12);border-color:rgba(108,249,168,.25);color:#a6e3a1}
+
+/* ── Alerts ───────────────────────────────────────────── */
+.alert{border-radius:8px;padding:.85rem 1.1rem;margin:.75rem 0;font-size:.83rem;line-height:1.6}
+.alert-tip {background:#EAF7F0;border-left:3px solid var(--green);color:#133D24}
+.alert-warn{background:#FFF7E6;border-left:3px solid var(--amber);color:#5A3500}
+.alert-info{background:#EAF0FB;border-left:3px solid var(--blue);color:#112066}
+.alert strong{font-weight:600}
+
+/* ── Expected output ──────────────────────────────────── */
+.expected{
+  background:#F8F9FC;border:1px solid var(--border);border-radius:7px;
+  padding:.75rem 1rem;margin:.6rem 0;font-family:var(--font-mono);
+  font-size:.78rem;color:var(--navy);line-height:1.7
+}
+.expected-label{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;margin-bottom:.35rem;font-family:var(--font-body)}
+
+/* ── Full script section ──────────────────────────────── */
+.script-section{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  margin-top:2.5rem;overflow:hidden
+}
+.script-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 1.4rem;background:var(--navy);
+}
+.script-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:#fff}
+.script-subtitle{font-size:.75rem;color:rgba(255,255,255,.55);margin-top:.15rem}
+.script-body{padding:0;position:relative}
+.script-body .code-block{border-radius:0;margin:0}
+.script-body .copy-btn{top:14px;right:14px}
+
+/* ── Navigation ───────────────────────────────────────── */
+.nav-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)
+}
+.nav-btn{
+  display:flex;align-items:center;gap:.5rem;padding:.7rem 1.3rem;
+  border-radius:8px;font-size:.85rem;font-weight:500;text-decoration:none;
+  transition:all .18s
+}
+.nav-btn-prev{background:var(--surface);border:1px solid var(--border);color:var(--muted)}
+.nav-btn-prev:hover{border-color:var(--blue);color:var(--blue)}
+.nav-btn-next{background:var(--navy);color:#fff}
+.nav-btn-next:hover{background:var(--blue)}
+
+/* ── Table ────────────────────────────────────────────── */
+.ref-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:.75rem 0}
+.ref-table th{background:var(--navy);color:#fff;padding:.5rem .8rem;text-align:left;font-weight:500}
+.ref-table td{padding:.48rem .8rem;border-bottom:1px solid var(--border)}
+.ref-table tr:nth-child(even) td{background:#F7F9FC}
+.ref-table code{font-family:var(--font-mono);font-size:.77rem;color:var(--blue)}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .main{margin-left:0}
+  .objectives{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Estadística<br/><span>2026 · CEDIA TMO</span></div>
+
+  <div class="sidebar-section">Módulo 1</div>
+  <a href="sesion1_teoria_v2.html" class="nav-item">
+    <span class="nav-num">01</span>Introducción
+  </a>
+  <a href="sesion2_teoria.html" class="nav-item">
+    <span class="nav-num">02</span>Manipulación de datos
+  </a>
+  <a href="#" class="nav-item active">
+    <span class="nav-num">03</span>Estadística descriptiva
+  </a>
+  <a href="#" class="nav-item" style="opacity:.45;pointer-events:none">
+    <span class="nav-num">04</span>Visualización con R
+  </a>
+  <a href="#" class="nav-item" style="opacity:.45;pointer-events:none">
+    <span class="nav-num">05</span>Probabilidad y muestreo
+  </a>
+
+  <hr class="nav-divider"/>
+  <div class="sidebar-section">Módulo 2</div>
+  <a href="#" class="nav-item" style="opacity:.35;pointer-events:none"><span class="nav-num">06</span>Normalidad</a>
+  <a href="#" class="nav-item" style="opacity:.35;pointer-events:none"><span class="nav-num">07</span>Inferencial</a>
+  <a href="#" class="nav-item" style="opacity:.35;pointer-events:none"><span class="nav-num">08</span>No paramétrica</a>
+  <a href="#" class="nav-item" style="opacity:.35;pointer-events:none"><span class="nav-num">09</span>Regresión</a>
+
+  <hr class="nav-divider"/>
+  <div class="sidebar-section">Esta sesión</div>
+  <a href="#part-eda"    class="nav-item"><span class="nav-num">P1</span>EDA y outliers</a>
+  <a href="#part-central" class="nav-item"><span class="nav-num">P2</span>Tendencia central</a>
+  <a href="#part-disp"  class="nav-item"><span class="nav-num">P3</span>Dispersión</a>
+  <a href="#part-freq"  class="nav-item"><span class="nav-num">P4</span>Frecuencias</a>
+  <a href="#part-rmd"   class="nav-item"><span class="nav-num">P5</span>R Markdown</a>
+  <a href="#part-apa"   class="nav-item"><span class="nav-num">P6</span>APA & CONSORT</a>
+  <a href="#script"     class="nav-item"><span class="nav-num">★</span>Script completo</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ MAIN -->
+<div class="main">
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="breadcrumb">
+        <a href="index.html">Inicio</a> / Sesión 3
+      </span>
+      <span class="session-badge">Sesión 03 · 11 mayo 2026</span>
+    </div>
+    <div class="topbar-right">
+      <div class="progress-mini">
+        <span>Módulo 1</span>
+        <div class="progress-mini-bar"><div class="progress-mini-fill"></div></div>
+        <span>3/5</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <div class="page-eyebrow">Práctica · Sesión 3</div>
+      <h1 class="page-title">Estadística Descriptiva<br/>y Auditoría de Datos</h1>
+      <p class="page-subtitle">
+        Aplica EDA completo sobre un dataset de rendimiento de estudiantes:
+        detecta valores faltantes, identifica outliers, calcula estadísticos descriptivos,
+        construye tablas de frecuencias y genera un reporte reproducible en R Markdown.
+      </p>
+    </div>
+
+    <!-- Objectives -->
+    <div class="objectives">
+      <div class="obj-card">
+        <div class="obj-icon">🔍</div>
+        <div class="obj-label">Competencia de investigación</div>
+        <div class="obj-text">Aplicar EDA como auditoría antes de cualquier análisis estadístico formal</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-icon">💻</div>
+        <div class="obj-label">Competencia tecnológica</div>
+        <div class="obj-text">Calcular estadísticos descriptivos, frecuencias y detectar outliers con R</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-icon">📝</div>
+        <div class="obj-label">Competencia comunicativa</div>
+        <div class="obj-text">Generar un reporte reproducible en R Markdown con formato APA</div>
+      </div>
+    </div>
+
+    <!-- ═══ PARTE 1 — EDA ═══════════════════════════════ -->
+    <div class="part-header" id="part-eda">
+      <span class="part-num">Parte 1</span>
+      <span class="part-badge eda">2.4 — EDA como auditoría</span>
+      <h2 class="part-title">Auditoría inicial del dataset</h2>
+    </div>
+
+    <div class="alert alert-info">
+      <strong>Dataset:</strong> Copia el código de configuración del script completo (al final) para crear el dataset <code>estudiantes</code>. Tiene 80 observaciones, 6 variables y valores faltantes + outliers introducidos intencionalmente.
+    </div>
+
+    <!-- Ex 1 -->
+    <div class="exercise" id="ex1">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">1</span>
+        <div class="ex-content">
+          <div class="ex-task">Carga el dataset y haz una primera inspección. ¿Cuántas filas, columnas y de qué tipo es cada variable?</div>
+          <div class="ex-hint">Usa <code>dim()</code>, <code>str()</code> y <code>summary()</code></div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Inspección inicial</span>
+<span class="fn">dim</span>(estudiantes)          <span class="cm"># filas y columnas</span>
+<span class="fn">str</span>(estudiantes)          <span class="cm"># tipos de variables</span>
+<span class="fn">summary</span>(estudiantes)      <span class="cm"># estadísticos básicos + NAs</span>
+<span class="fn">head</span>(estudiantes, <span class="nu">8</span>)      <span class="cm"># primeras 8 filas</span></pre>
+        </div>
+        <div class="expected-label">Salida esperada (extracto)</div>
+        <div class="expected">[1] 80  6
+'data.frame': 80 obs. of 6 variables:
+ $ id         : int  1 2 3 ...
+ $ nota_final : num  7.2 8.1 NA ...
+ $ horas_estudio: num  12 15 8 ...
+ $ edad       : int  20 22 21 ...
+ $ carrera    : chr  "Ing. Sistemas" ...
+ $ aprobado   : logi  TRUE TRUE ...</div>
+        <div class="alert alert-tip"><strong>¿Qué buscar?</strong> En <code>summary()</code> observa la fila <code>NA's</code> bajo cada variable numérica. Esa es tu primera señal de valores faltantes.</div>
+      </div>
+    </div>
+
+    <!-- Ex 2 -->
+    <div class="exercise" id="ex2">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">2</span>
+        <div class="ex-content">
+          <div class="ex-task">Detecta y cuantifica los valores faltantes. ¿Qué porcentaje representa cada variable con NAs? ¿Qué tipo de faltante (MCAR/MAR/MNAR) sospecharías para <code>nota_final</code>?</div>
+          <div class="ex-hint">Usa <code>is.na()</code>, <code>colSums()</code> y razona sobre el mecanismo</div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Conteo de NAs por variable</span>
+<span class="fn">colSums</span>(<span class="fn">is.na</span>(estudiantes))
+
+<span class="cm"># Porcentaje de faltantes</span>
+<span class="fn">round</span>(<span class="fn">colSums</span>(<span class="fn">is.na</span>(estudiantes)) / <span class="fn">nrow</span>(estudiantes) * <span class="nu">100</span>, <span class="nu">1</span>)
+
+<span class="cm"># ¿Los NAs en nota_final son al azar o sistemáticos?</span>
+estudiantes[<span class="fn">is.na</span>(estudiantes$nota_final), <span class="st">"aprobado"</span>]
+<span class="cm"># Si todos los NAs son FALSE → MNAR (los que no aprobaron no entregaron)</span></pre>
+        </div>
+        <div class="alert alert-warn"><strong>Reflexión:</strong> Si <code>nota_final</code> falta solo en quienes no aprobaron, el mecanismo es <strong>MNAR</strong> — imputar con la media sería un error porque sesgaría la distribución hacia arriba.</div>
+      </div>
+    </div>
+
+    <!-- Ex 3 -->
+    <div class="exercise" id="ex3">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">3</span>
+        <div class="ex-content">
+          <div class="ex-task">Detecta outliers en <code>nota_final</code> con la regla IQR (Tukey) y con Z-score. ¿Coinciden los resultados? ¿Eliminarías esos valores?</div>
+          <div class="ex-hint"><code>IQR()</code>, <code>boxplot.stats()</code>, <code>scale()</code></div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Método IQR (Tukey)</span>
+notas &lt;- <span class="fn">na.omit</span>(estudiantes$nota_final)
+Q1 &lt;- <span class="fn">quantile</span>(notas, <span class="nu">0.25</span>)
+Q3 &lt;- <span class="fn">quantile</span>(notas, <span class="nu">0.75</span>)
+iqr &lt;- <span class="fn">IQR</span>(notas)
+lim_inf &lt;- Q1 <span class="op">-</span> <span class="nu">1.5</span> <span class="op">*</span> iqr
+lim_sup &lt;- Q3 <span class="op">+</span> <span class="nu">1.5</span> <span class="op">*</span> iqr
+outliers_iqr &lt;- notas[notas <span class="op">&lt;</span> lim_inf <span class="op">|</span> notas <span class="op">&gt;</span> lim_sup]
+<span class="fn">cat</span>(<span class="st">"Outliers IQR:"</span>, outliers_iqr, <span class="st">"\n"</span>)
+
+<span class="cm"># Método Z-score (|z| > 3)</span>
+z &lt;- <span class="fn">as.numeric</span>(<span class="fn">scale</span>(notas))
+outliers_z &lt;- notas[<span class="fn">abs</span>(z) <span class="op">&gt;</span> <span class="nu">3</span>]
+<span class="fn">cat</span>(<span class="st">"Outliers Z-score:"</span>, outliers_z, <span class="st">"\n"</span>)
+
+<span class="cm"># Boxplot visual</span>
+<span class="fn">boxplot</span>(notas, main <span class="op">=</span> <span class="st">"Distribución nota_final"</span>,
+        col <span class="op">=</span> <span class="st">"#4A90E2"</span>, ylab <span class="op">=</span> <span class="st">"Nota"</span>)</pre>
+        </div>
+        <div class="alert alert-tip"><strong>Decisión documentada:</strong> Si el outlier es un error de captura (nota = 15 en escala de 0–10), se elimina. Si es un estudiante con rendimiento genuinamente excepcional, se conserva y se menciona en el reporte.</div>
+      </div>
+    </div>
+
+    <!-- Ex 4 -->
+    <div class="exercise" id="ex4">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">4</span>
+        <div class="ex-content">
+          <div class="ex-task">Imputa los valores faltantes en <code>nota_final</code> usando la mediana (más robusta que la media para datos asimétricos). Verifica que no queden NAs.</div>
+          <div class="ex-hint"><code>median(na.rm=TRUE)</code>, <code>is.na()</code></div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Imputación con mediana</span>
+mediana_nota &lt;- <span class="fn">median</span>(estudiantes$nota_final, na.rm <span class="op">=</span> <span class="kw">TRUE</span>)
+estudiantes$nota_final[<span class="fn">is.na</span>(estudiantes$nota_final)] &lt;- mediana_nota
+
+<span class="cm"># Verificación</span>
+<span class="fn">sum</span>(<span class="fn">is.na</span>(estudiantes$nota_final))  <span class="cm"># debe dar 0</span>
+<span class="fn">cat</span>(<span class="st">"Mediana usada para imputación:"</span>, mediana_nota, <span class="st">"\n"</span>)</pre>
+        </div>
+        <div class="alert alert-warn"><strong>¿Por qué mediana y no media?</strong> Si la distribución de notas es asimétrica (lo comprobarás en la Parte 3), la media está sesgada por los outliers. La mediana es más representativa como valor de imputación.</div>
+      </div>
+    </div>
+
+    <!-- ═══ PARTE 2 — TENDENCIA CENTRAL ════════════════ -->
+    <div class="part-header" id="part-central">
+      <span class="part-num">Parte 2</span>
+      <span class="part-badge central">3.1 — Tendencia central</span>
+      <h2 class="part-title">Media, mediana y moda</h2>
+    </div>
+
+    <!-- Ex 5 -->
+    <div class="exercise" id="ex5">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">5</span>
+        <div class="ex-content">
+          <div class="ex-task">Calcula media, mediana y moda de <code>nota_final</code>. ¿Difieren notablemente? ¿Qué medida reportarías en un paper y por qué?</div>
+          <div class="ex-hint"><code>mean()</code>, <code>median()</code>, <code>which.max(table())</code></div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Las tres medidas</span>
+media   &lt;- <span class="fn">mean</span>(estudiantes$nota_final)
+mediana &lt;- <span class="fn">median</span>(estudiantes$nota_final)
+moda    &lt;- <span class="fn">as.numeric</span>(<span class="fn">names</span>(<span class="fn">which.max</span>(<span class="fn">table</span>(
+             <span class="fn">round</span>(estudiantes$nota_final, <span class="nu">1</span>)))))
+
+<span class="fn">cat</span>(<span class="fn">sprintf</span>(<span class="st">"Media:   %.2f\nMediana: %.2f\nModa:    %.1f\n"</span>,
+          media, mediana, moda))
+
+<span class="cm"># Media recortada (5%) — robusta ante outliers extremos</span>
+media_trim &lt;- <span class="fn">mean</span>(estudiantes$nota_final, trim <span class="op">=</span> <span class="nu">0.05</span>)
+<span class="fn">cat</span>(<span class="st">"Media cortada (5%):"</span>, <span class="fn">round</span>(media_trim, <span class="nu">2</span>), <span class="st">"\n"</span>)</pre>
+        </div>
+        <div class="alert alert-tip"><strong>Regla APA §4.19:</strong> Si |media − mediana| > 0.5 puntos en esta escala, reporta ambas. Si además encontraste outliers en la Parte 1, prioriza la mediana como medida principal.</div>
+      </div>
+    </div>
+
+    <!-- Ex 6 -->
+    <div class="exercise" id="ex6">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">6</span>
+        <div class="ex-content">
+          <div class="ex-task">Calcula la mediana de <code>nota_final</code> por carrera. ¿Qué carrera tiene el rendimiento mediano más alto? Usa <code>tapply()</code>.</div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Mediana por grupo</span>
+medianas_carrera &lt;- <span class="fn">tapply</span>(estudiantes$nota_final,
+                           estudiantes$carrera, <span class="fn">median</span>)
+<span class="fn">sort</span>(medianas_carrera, decreasing <span class="op">=</span> <span class="kw">TRUE</span>)
+
+<span class="cm"># Media también, para comparar</span>
+medias_carrera &lt;- <span class="fn">tapply</span>(estudiantes$nota_final,
+                         estudiantes$carrera, <span class="fn">mean</span>)
+<span class="fn">round</span>(medias_carrera, <span class="nu">2</span>)</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PARTE 3 — DISPERSIÓN ════════════════════════ -->
+    <div class="part-header" id="part-disp">
+      <span class="part-num">Parte 3</span>
+      <span class="part-badge disp">3.2 — Dispersión</span>
+      <h2 class="part-title">Varianza, SD, asimetría y curtosis</h2>
+    </div>
+
+    <!-- Ex 7 -->
+    <div class="exercise" id="ex7">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">7</span>
+        <div class="ex-content">
+          <div class="ex-task">Calcula varianza, desviación estándar, asimetría y curtosis de <code>nota_final</code>. Interpreta cada resultado e indica si la distribución es simétrica.</div>
+          <div class="ex-hint"><code>var()</code>, <code>sd()</code>, <code>library(e1071)</code></div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="fn">library</span>(e1071)
+
+varianza &lt;- <span class="fn">var</span>(estudiantes$nota_final)
+desv_est &lt;- <span class="fn">sd</span>(estudiantes$nota_final)
+asimetria &lt;- <span class="fn">skewness</span>(estudiantes$nota_final)
+curtosis  &lt;- <span class="fn">kurtosis</span>(estudiantes$nota_final)
+
+<span class="fn">cat</span>(<span class="fn">sprintf</span>(<span class="st">"Varianza:  %.4f\nDesv. Est: %.4f\nAsimetría: %.4f\nCurtosis:  %.4f\n"</span>,
+          varianza, desv_est, asimetria, curtosis))
+
+<span class="cm"># Interpretación automática</span>
+<span class="kw">if</span>(<span class="fn">abs</span>(asimetria) <span class="op">&gt;</span> <span class="nu">1</span>) {
+  <span class="fn">cat</span>(<span class="st">"→ Distribución NOTABLEMENTE asimétrica. Reportar mediana.\n"</span>)
+} <span class="kw">else</span> {
+  <span class="fn">cat</span>(<span class="st">"→ Distribución aproximadamente simétrica. Media es adecuada.\n"</span>)
+}</pre>
+        </div>
+        <table class="ref-table">
+          <tr><th>Estadístico</th><th>Valor esperado</th><th>Interpretación</th></tr>
+          <tr><td>Asimetría (γ₁)</td><td>γ₁ ≈ 0</td><td>Simétrica</td></tr>
+          <tr><td></td><td>γ₁ > 1</td><td>Cola derecha pronunciada — usar mediana</td></tr>
+          <tr><td>Curtosis (γ₂)</td><td>γ₂ = 3</td><td>Normal (mesocúrtica)</td></tr>
+          <tr><td></td><td>γ₂ > 3</td><td>Leptocúrtica — probable presencia de outliers</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Ex 8 -->
+    <div class="exercise" id="ex8">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">8</span>
+        <div class="ex-content">
+          <div class="ex-task">Compara la desviación estándar de <code>nota_final</code> entre carreras. ¿En qué carrera son las notas más homogéneas?</div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># SD por carrera</span>
+sd_carrera &lt;- <span class="fn">tapply</span>(estudiantes$nota_final,
+                     estudiantes$carrera, <span class="fn">sd</span>)
+<span class="fn">round</span>(<span class="fn">sort</span>(sd_carrera), <span class="nu">3</span>)
+
+<span class="cm"># Coeficiente de variación (CV) = SD/Media — comparación relativa</span>
+cv_carrera &lt;- <span class="fn">tapply</span>(estudiantes$nota_final, estudiantes$carrera,
+                     <span class="kw">function</span>(x) <span class="fn">sd</span>(x)/<span class="fn">mean</span>(x) * <span class="nu">100</span>)
+<span class="fn">round</span>(<span class="fn">sort</span>(cv_carrera), <span class="nu">1</span>)</pre>
+        </div>
+        <div class="alert alert-info"><strong>CV:</strong> El coeficiente de variación permite comparar dispersión entre grupos con medias distintas. CV < 15% = datos homogéneos; CV > 30% = datos heterogéneos.</div>
+      </div>
+    </div>
+
+    <!-- ═══ PARTE 4 — FRECUENCIAS ════════════════════════ -->
+    <div class="part-header" id="part-freq">
+      <span class="part-num">Parte 4</span>
+      <span class="part-badge freq">3.3 — Distribución de frecuencias</span>
+      <h2 class="part-title">Tablas de frecuencias e histograma</h2>
+    </div>
+
+    <!-- Ex 9 -->
+    <div class="exercise" id="ex9">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">9</span>
+        <div class="ex-content">
+          <div class="ex-task">Construye una tabla de frecuencias para <code>carrera</code> (variable discreta) con frecuencia absoluta, relativa y relativa acumulada.</div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Tabla de frecuencias — variable discreta</span>
+f  &lt;- <span class="fn">table</span>(estudiantes$carrera)          <span class="cm"># absoluta</span>
+fn &lt;- <span class="fn">prop.table</span>(f)                       <span class="cm"># relativa</span>
+F  &lt;- <span class="fn">cumsum</span>(f)                           <span class="cm"># acumulada</span>
+Fn &lt;- <span class="fn">cumsum</span>(fn)                          <span class="cm"># relativa acumulada</span>
+
+tabla_carreras &lt;- <span class="fn">data.frame</span>(
+  Carrera   = <span class="fn">names</span>(f),
+  f         = <span class="fn">as.numeric</span>(f),
+  F         = <span class="fn">as.numeric</span>(F),
+  f_n       = <span class="fn">round</span>(<span class="fn">as.numeric</span>(fn), <span class="nu">3</span>),
+  F_n       = <span class="fn">round</span>(<span class="fn">as.numeric</span>(Fn), <span class="nu">3</span>)
+)
+tabla_carreras</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ex 10 -->
+    <div class="exercise" id="ex10">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">10</span>
+        <div class="ex-content">
+          <div class="ex-task">Construye una tabla de frecuencias para <code>nota_final</code> (variable continua) usando la regla de Sturges para determinar el número de clases. Luego crea el histograma.</div>
+          <div class="ex-hint"><code>nclass.Sturges()</code>, <code>cut()</code>, <code>hist()</code></div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Número de clases con Sturges</span>
+n_clases &lt;- <span class="fn">nclass.Sturges</span>(estudiantes$nota_final)
+<span class="fn">cat</span>(<span class="st">"Clases recomendadas:"</span>, n_clases, <span class="st">"\n"</span>)
+
+<span class="cm"># Tabla de frecuencias continua</span>
+intervalos &lt;- <span class="fn">cut</span>(estudiantes$nota_final,
+                   breaks <span class="op">=</span> n_clases, include.lowest <span class="op">=</span> <span class="kw">TRUE</span>)
+f  &lt;- <span class="fn">table</span>(intervalos)
+fn &lt;- <span class="fn">prop.table</span>(f)
+F  &lt;- <span class="fn">cumsum</span>(f)
+Fn &lt;- <span class="fn">cumsum</span>(fn)
+
+<span class="fn">data.frame</span>(Intervalo <span class="op">=</span> <span class="fn">names</span>(f),
+           f  <span class="op">=</span> <span class="fn">as.numeric</span>(f),
+           F  <span class="op">=</span> <span class="fn">as.numeric</span>(F),
+           f_n <span class="op">=</span> <span class="fn">round</span>(<span class="fn">as.numeric</span>(fn), <span class="nu">3</span>),
+           F_n <span class="op">=</span> <span class="fn">round</span>(<span class="fn">as.numeric</span>(Fn), <span class="nu">3</span>))
+
+<span class="cm"># Histograma</span>
+<span class="fn">hist</span>(estudiantes$nota_final,
+     breaks <span class="op">=</span> n_clases,
+     col    <span class="op">=</span> <span class="st">"#4A90E2"</span>,
+     main   <span class="op">=</span> <span class="st">"Distribución de notas finales"</span>,
+     xlab   <span class="op">=</span> <span class="st">"Nota final"</span>,
+     ylab   <span class="op">=</span> <span class="st">"Frecuencia"</span>)
+
+<span class="cm"># Ojiva (frecuencia acumulada)</span>
+<span class="fn">plot</span>(<span class="fn">ecdf</span>(estudiantes$nota_final),
+     main <span class="op">=</span> <span class="st">"Ojiva — nota_final"</span>,
+     xlab <span class="op">=</span> <span class="st">"Nota"</span>, ylab <span class="op">=</span> <span class="st">"F(x) acumulada"</span>,
+     col  <span class="op">=</span> <span class="st">"#1E7A3C"</span>, lwd <span class="op">=</span> <span class="nu">2</span>)</pre>
+        </div>
+        <div class="alert alert-tip"><strong>Regla de Sturges:</strong> k ≈ 1 + 3.322 · log₁₀(n). Para n = 80 → k ≈ 7 clases. Puedes ajustar manualmente si los intervalos no tienen sentido práctico.</div>
+      </div>
+    </div>
+
+    <!-- ═══ PARTE 5 — R MARKDOWN ════════════════════════ -->
+    <div class="part-header" id="part-rmd">
+      <span class="part-num">Parte 5</span>
+      <span class="part-badge rmd">3.4 — R Markdown</span>
+      <h2 class="part-title">Reporte reproducible</h2>
+    </div>
+
+    <!-- Ex 11 -->
+    <div class="exercise" id="ex11">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">11</span>
+        <div class="ex-content">
+          <div class="ex-task">Crea un archivo <code>reporte_sesion3.Rmd</code> en RStudio. Usa la estructura YAML, chunks y texto Markdown para documentar el análisis de las Partes 1 a 4.</div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm">---
+title: "Sesión 3 – Estadística Descriptiva y EDA"
+author: "Tu Nombre"
+date: "`r Sys.Date()`"
+output: html_document
+---</span>
+
+<span class="st">## 1. Carga y auditoría del dataset</span>
+
+<span class="cm">```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+set.seed(42)
+```</span>
+
+<span class="cm">```{r carga}
+# Pegar aquí el código de creación del dataset
+source("sesion3_script.R")   # o copiar el código del dataset
+dim(estudiantes)
+```</span>
+
+<span class="st">## 2. Valores faltantes</span>
+
+<span class="st">Se detectaron `r sum(is.na(estudiantes))` valores faltantes en total.</span>
+
+<span class="cm">```{r missing}
+colSums(is.na(estudiantes))
+```</span>
+
+<span class="st">## 3. Estadísticos descriptivos</span>
+
+<span class="cm">```{r descriptivos}
+library(e1071)
+data.frame(
+  Media    = round(mean(estudiantes$nota_final), 2),
+  Mediana  = round(median(estudiantes$nota_final), 2),
+  SD       = round(sd(estudiantes$nota_final), 2),
+  Asimetria = round(skewness(estudiantes$nota_final), 3),
+  Curtosis  = round(kurtosis(estudiantes$nota_final), 3)
+) |> knitr::kable(caption = "Tabla 1. Estadísticos descriptivos de nota_final (APA)")
+```</span></pre>
+        </div>
+        <div class="alert alert-tip"><strong>Inline code:</strong> Dentro del texto escribe <code>`r round(mean(estudiantes$nota_final), 2)`</code> para insertar el valor calculado directamente en el párrafo. Así el número se actualiza automáticamente si cambias los datos.</div>
+      </div>
+    </div>
+
+    <!-- ═══ PARTE 6 — APA ════════════════════════════════ -->
+    <div class="part-header" id="part-apa">
+      <span class="part-num">Parte 6</span>
+      <span class="part-badge apa">3.5 — APA & CONSORT</span>
+      <h2 class="part-title">Reporte con estándares científicos</h2>
+    </div>
+
+    <!-- Ex 12 -->
+    <div class="exercise" id="ex12">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">12</span>
+        <div class="ex-content">
+          <div class="ex-task">Escribe el párrafo de resultados descriptivos para tu reporte siguiendo el formato APA 7ª edición. Incluye M, SD, n, y menciona asimetría si corresponde.</div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Genera los valores para el párrafo APA</span>
+n    &lt;- <span class="fn">nrow</span>(estudiantes)
+M    &lt;- <span class="fn">round</span>(<span class="fn">mean</span>(estudiantes$nota_final), <span class="nu">2</span>)
+Mdn  &lt;- <span class="fn">round</span>(<span class="fn">median</span>(estudiantes$nota_final), <span class="nu">2</span>)
+SD   &lt;- <span class="fn">round</span>(<span class="fn">sd</span>(estudiantes$nota_final), <span class="nu">2</span>)
+g1   &lt;- <span class="fn">round</span>(<span class="fn">skewness</span>(estudiantes$nota_final), <span class="nu">2</span>)
+
+<span class="fn">cat</span>(<span class="fn">sprintf</span>(<span class="st">"
+Párrafo APA sugerido:
+─────────────────────────────────────────────────────
+Las notas finales de los %d estudiantes presentaron
+una media de M = %.2f (SD = %.2f). La distribución
+mostró asimetría %s (γ₁ = %.2f), por lo que se reporta
+también la mediana (Mdn = %.2f) como medida de tendencia
+central más representativa.
+"</span>, n, M, SD,
+<span class="kw">ifelse</span>(g1 <span class="op">&gt;</span> <span class="nu">0</span>, <span class="st">"positiva"</span>, <span class="st">"negativa"</span>),
+g1, Mdn))</pre>
+        </div>
+        <div class="alert alert-warn"><strong>Error común:</strong> Escribir "el promedio fue 7.3 y la desviación fue 1.2" sin cursiva, sin n, y sin verificar si la media es la medida correcta. APA exige cursiva en M, SD, n y reportar la mediana cuando γ₁ > 1.</div>
+      </div>
+    </div>
+
+    <!-- Ex 13 — Bonus -->
+    <div class="exercise" id="ex13">
+      <div class="ex-header" onclick="toggle(this)">
+        <span class="ex-num">★</span>
+        <div class="ex-content">
+          <div class="ex-task"><strong>Bonus:</strong> Detecta outliers multivariados en <code>nota_final</code> + <code>horas_estudio</code> usando la distancia de Mahalanobis. ¿Hay estudiantes con un patrón de notas/horas inusual?</div>
+          <div class="ex-hint">Nivel avanzado — <code>mahalanobis()</code>, chi-cuadrado</div>
+        </div>
+        <span class="ex-expand">▾</span>
+      </div>
+      <div class="ex-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          <pre><span class="cm"># Outliers multivariados — Distancia de Mahalanobis</span>
+vars_num &lt;- estudiantes[, <span class="fn">c</span>(<span class="st">"nota_final"</span>, <span class="st">"horas_estudio"</span>)]
+
+mah &lt;- <span class="fn">mahalanobis</span>(vars_num,
+                   <span class="fn">colMeans</span>(vars_num),
+                   <span class="fn">cov</span>(vars_num))
+
+<span class="cm"># Umbral: chi² con p = 0.001 y 2 grados de libertad</span>
+umbral &lt;- <span class="fn">qchisq</span>(<span class="nu">0.999</span>, df <span class="op">=</span> <span class="nu">2</span>)
+outliers_mv &lt;- <span class="fn">which</span>(mah <span class="op">&gt;</span> umbral)
+
+<span class="fn">cat</span>(<span class="st">"Outliers multivariados (índices):"</span>, outliers_mv, <span class="st">"\n"</span>)
+estudiantes[outliers_mv, <span class="fn">c</span>(<span class="st">"nota_final"</span>, <span class="st">"horas_estudio"</span>, <span class="st">"carrera"</span>)]
+
+<span class="cm"># Gráfico: scatter con outliers marcados</span>
+<span class="fn">plot</span>(vars_num, pch <span class="op">=</span> <span class="nu">16</span>, col <span class="op">=</span> <span class="st">"#4A90E2"</span>,
+     main <span class="op">=</span> <span class="st">"Outliers multivariados (Mahalanobis)"</span>)
+<span class="fn">points</span>(vars_num[outliers_mv,], pch <span class="op">=</span> <span class="nu">4</span>, col <span class="op">=</span> <span class="st">"#C0392B"</span>, cex <span class="op">=</span> <span class="nu">2</span>, lwd <span class="op">=</span> <span class="nu">2</span>)
+<span class="fn">legend</span>(<span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fn">c</span>(<span class="st">"Normal"</span>, <span class="st">"Outlier Mah."</span>),
+       pch <span class="op">=</span> <span class="fn">c</span>(<span class="nu">16</span>, <span class="nu">4</span>), col <span class="op">=</span> <span class="fn">c</span>(<span class="st">"#4A90E2"</span>, <span class="st">"#C0392B"</span>))</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCRIPT COMPLETO ══════════════════════════════ -->
+    <div class="script-section" id="script">
+      <div class="script-header">
+        <div>
+          <div class="script-title">★ Script completo — sesion3_practica.R</div>
+          <div class="script-subtitle">Copia este script en RStudio y ejecuta sección por sección</div>
+        </div>
+      </div>
+      <div class="script-body">
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copiar todo</button>
+          <pre><span class="cm"># ══════════════════════════════════════════════════════════════════
+# SESIÓN 3 — Estadística Descriptiva y EDA
+# Estadística 2026 · CEDIA TMO
+# ══════════════════════════════════════════════════════════════════
+
+# ── Paquetes ───────────────────────────────────────────────────────</span>
+<span class="kw">if</span> (<span class="op">!</span><span class="fn">require</span>(e1071)) <span class="fn">install.packages</span>(<span class="st">"e1071"</span>)
+<span class="fn">library</span>(e1071)
+
+<span class="cm"># ── Dataset simulado ───────────────────────────────────────────────
+# Datos de rendimiento académico (n = 80, 6 variables)</span>
+<span class="fn">set.seed</span>(<span class="nu">2026</span>)
+n &lt;- <span class="nu">80</span>
+
+estudiantes &lt;- <span class="fn">data.frame</span>(
+  id           = <span class="nu">1</span>:n,
+  nota_final   = <span class="fn">round</span>(<span class="fn">c</span>(<span class="fn">rnorm</span>(<span class="nu">74</span>, mean <span class="op">=</span> <span class="nu">7.1</span>, sd <span class="op">=</span> <span class="nu">1.4</span>),
+                           <span class="fn">c</span>(<span class="nu">0.8</span>, <span class="nu">0.9</span>, <span class="nu">10.5</span>, <span class="nu">10.8</span>, <span class="nu">11.0</span>, <span class="nu">10.9</span>)), <span class="nu">1</span>),
+  horas_estudio = <span class="fn">round</span>(<span class="fn">rnorm</span>(n, mean <span class="op">=</span> <span class="nu">12</span>, sd <span class="op">=</span> <span class="nu">4</span>), <span class="nu">0</span>),
+  edad         = <span class="fn">sample</span>(<span class="nu">19</span>:<span class="nu">28</span>, n, replace <span class="op">=</span> <span class="kw">TRUE</span>),
+  carrera      = <span class="fn">sample</span>(<span class="fn">c</span>(<span class="st">"Ing. Sistemas"</span>, <span class="st">"Medicina"</span>,
+                           <span class="st">"Derecho"</span>, <span class="st">"Administración"</span>),
+                         n, replace <span class="op">=</span> <span class="kw">TRUE</span>),
+  aprobado     = <span class="fn">logical</span>(n)
+)
+
+<span class="cm"># Limitar notas a rango 0–10</span>
+estudiantes$nota_final &lt;- <span class="fn">pmin</span>(<span class="fn">pmax</span>(estudiantes$nota_final, <span class="nu">0</span>), <span class="nu">10</span>)
+
+<span class="cm"># Definir aprobado</span>
+estudiantes$aprobado &lt;- estudiantes$nota_final <span class="op">&gt;=</span> <span class="nu">6</span>
+
+<span class="cm"># Introducir valores faltantes (8 NAs en nota_final)</span>
+<span class="fn">set.seed</span>(<span class="nu">123</span>)
+idx_na &lt;- <span class="fn">sample</span>(<span class="fn">which</span>(<span class="op">!</span>estudiantes$aprobado), <span class="nu">8</span>)
+estudiantes$nota_final[idx_na] &lt;- <span class="kw">NA</span>
+
+<span class="cm"># ══ PARTE 1 — EDA ══════════════════════════════════════════════════</span>
+
+<span class="cm"># Ejercicio 1 — Inspección inicial</span>
+<span class="fn">dim</span>(estudiantes)
+<span class="fn">str</span>(estudiantes)
+<span class="fn">summary</span>(estudiantes)
+<span class="fn">head</span>(estudiantes, <span class="nu">8</span>)
+
+<span class="cm"># Ejercicio 2 — Missing values</span>
+<span class="fn">colSums</span>(<span class="fn">is.na</span>(estudiantes))
+<span class="fn">round</span>(<span class="fn">colSums</span>(<span class="fn">is.na</span>(estudiantes)) / <span class="fn">nrow</span>(estudiantes) * <span class="nu">100</span>, <span class="nu">1</span>)
+estudiantes[<span class="fn">is.na</span>(estudiantes$nota_final), <span class="st">"aprobado"</span>]
+
+<span class="cm"># Ejercicio 3 — Outliers univariados</span>
+notas &lt;- <span class="fn">na.omit</span>(estudiantes$nota_final)
+Q1 &lt;- <span class="fn">quantile</span>(notas, <span class="nu">0.25</span>); Q3 &lt;- <span class="fn">quantile</span>(notas, <span class="nu">0.75</span>)
+iqr &lt;- <span class="fn">IQR</span>(notas)
+outliers_iqr &lt;- notas[notas <span class="op">&lt;</span> Q1 <span class="op">-</span> <span class="nu">1.5</span><span class="op">*</span>iqr <span class="op">|</span> notas <span class="op">&gt;</span> Q3 <span class="op">+</span> <span class="nu">1.5</span><span class="op">*</span>iqr]
+outliers_z &lt;- notas[<span class="fn">abs</span>(<span class="fn">scale</span>(notas)) <span class="op">&gt;</span> <span class="nu">3</span>]
+<span class="fn">cat</span>(<span class="st">"IQR:"</span>, outliers_iqr, <span class="st">"\nZ-score:"</span>, outliers_z, <span class="st">"\n"</span>)
+<span class="fn">boxplot</span>(notas, col <span class="op">=</span> <span class="st">"#4A90E2"</span>, main <span class="op">=</span> <span class="st">"Boxplot — nota_final"</span>)
+
+<span class="cm"># Ejercicio 4 — Imputación con mediana</span>
+mediana_nota &lt;- <span class="fn">median</span>(estudiantes$nota_final, na.rm <span class="op">=</span> <span class="kw">TRUE</span>)
+estudiantes$nota_final[<span class="fn">is.na</span>(estudiantes$nota_final)] &lt;- mediana_nota
+<span class="fn">sum</span>(<span class="fn">is.na</span>(estudiantes$nota_final))
+
+<span class="cm"># ══ PARTE 2 — TENDENCIA CENTRAL ════════════════════════════════════</span>
+
+<span class="cm"># Ejercicio 5</span>
+<span class="fn">cat</span>(<span class="fn">sprintf</span>(<span class="st">"Media: %.2f | Mediana: %.2f\n"</span>,
+          <span class="fn">mean</span>(estudiantes$nota_final),
+          <span class="fn">median</span>(estudiantes$nota_final)))
+<span class="fn">mean</span>(estudiantes$nota_final, trim <span class="op">=</span> <span class="nu">0.05</span>)
+
+<span class="cm"># Ejercicio 6</span>
+<span class="fn">tapply</span>(estudiantes$nota_final, estudiantes$carrera, median)
+
+<span class="cm"># ══ PARTE 3 — DISPERSIÓN ════════════════════════════════════════════</span>
+
+<span class="cm"># Ejercicio 7</span>
+<span class="fn">cat</span>(<span class="fn">sprintf</span>(<span class="st">"SD: %.3f | Asimetría: %.3f | Curtosis: %.3f\n"</span>,
+          <span class="fn">sd</span>(estudiantes$nota_final),
+          <span class="fn">skewness</span>(estudiantes$nota_final),
+          <span class="fn">kurtosis</span>(estudiantes$nota_final)))
+
+<span class="cm"># Ejercicio 8</span>
+<span class="fn">round</span>(<span class="fn">tapply</span>(estudiantes$nota_final, estudiantes$carrera, sd), <span class="nu">3</span>)
+
+<span class="cm"># ══ PARTE 4 — FRECUENCIAS ═══════════════════════════════════════════</span>
+
+<span class="cm"># Ejercicio 9 — Variable discreta</span>
+f &lt;- <span class="fn">table</span>(estudiantes$carrera)
+<span class="fn">data.frame</span>(f <span class="op">=</span> <span class="fn">as.numeric</span>(f),
+           F <span class="op">=</span> <span class="fn">cumsum</span>(<span class="fn">as.numeric</span>(f)),
+           fn <span class="op">=</span> <span class="fn">round</span>(<span class="fn">prop.table</span>(f), <span class="nu">3</span>),
+           Fn <span class="op">=</span> <span class="fn">round</span>(<span class="fn">cumsum</span>(<span class="fn">prop.table</span>(f)), <span class="nu">3</span>))
+
+<span class="cm"># Ejercicio 10 — Variable continua</span>
+n_clases &lt;- <span class="fn">nclass.Sturges</span>(estudiantes$nota_final)
+intervalos &lt;- <span class="fn">cut</span>(estudiantes$nota_final, breaks <span class="op">=</span> n_clases,
+                    include.lowest <span class="op">=</span> <span class="kw">TRUE</span>)
+<span class="fn">table</span>(intervalos)
+<span class="fn">hist</span>(estudiantes$nota_final, breaks <span class="op">=</span> n_clases,
+     col <span class="op">=</span> <span class="st">"#4A90E2"</span>, main <span class="op">=</span> <span class="st">"Histograma nota_final"</span>)
+<span class="fn">plot</span>(<span class="fn">ecdf</span>(estudiantes$nota_final), main <span class="op">=</span> <span class="st">"Ojiva"</span>, col <span class="op">=</span> <span class="st">"#1E7A3C"</span>, lwd <span class="op">=</span> <span class="nu">2</span>)
+
+<span class="cm"># ══ BONUS — Mahalanobis ═════════════════════════════════════════════</span>
+vars_num &lt;- estudiantes[, <span class="fn">c</span>(<span class="st">"nota_final"</span>, <span class="st">"horas_estudio"</span>)]
+mah &lt;- <span class="fn">mahalanobis</span>(vars_num, <span class="fn">colMeans</span>(vars_num), <span class="fn">cov</span>(vars_num))
+outliers_mv &lt;- <span class="fn">which</span>(mah <span class="op">&gt;</span> <span class="fn">qchisq</span>(<span class="nu">0.999</span>, df <span class="op">=</span> <span class="nu">2</span>))
+estudiantes[outliers_mv, <span class="fn">c</span>(<span class="st">"nota_final"</span>, <span class="st">"horas_estudio"</span>, <span class="st">"carrera"</span>)]</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-footer">
+      <a href="sesion2_teoria.html" class="nav-btn nav-btn-prev">← Sesión 2</a>
+      <a href="sesion4_teoria.html" class="nav-btn nav-btn-next">Sesión 4 — Visualización →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggle(header) {
+  const ex = header.closest('.exercise');
+  ex.classList.toggle('open');
+}
+
+function copyCode(btn) {
+  const block = btn.closest('.code-block');
+  const text = block.querySelector('pre').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Highlight active section in sidebar on scroll
+const sections = document.querySelectorAll('[id^="part-"], #script');
+const navItems = document.querySelectorAll('.sidebar .nav-item');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+  navItems.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+});
+</script>
+</body>
+</html>
